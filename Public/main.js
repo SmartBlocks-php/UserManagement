@@ -1,22 +1,19 @@
-require.config({
-    paths : {
-//        jquery: "Lib/jquery",
-        underscore: "Lib/underscore",
-        backbone: "Lib/backbone"
-    }
-});
-
-//define('jquery-private', ['jquery'], function (jq) {
-//    return jq.noConflict( true );
-//});
-
-require([
-//    'jquery-private',
+define([
+    'jquery',
     'underscore',
     'backbone'
 ], function ($, _, Backbone) {
 
-    return {
-        ha: "my_module"
+    var init_login = function () {
+
     };
+
+
+    var main = {
+        init: function () {
+            init_login();
+        }
+    };
+
+    return main;
 });
