@@ -1,0 +1,20 @@
+{
+  "name": "SmartblocksUserManagement",
+  "version": "0.0.0",
+  "description": "Front-end for SmartBlocks UserManagement block",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Antoine Jackson",
+  "license": "MIT",
+  "dependencies": {
+    "grunt": "~0.4.1",
+    "grunt-contrib-concat": "~0.3.0",
+    "grunt-contrib-uglify": "~0.2.4",
+    "grunt-contrib-nodeunit": "~0.2.2",
+    "grunt-contrib-jshint": "~0.6.4",
+    "grunt-contrib-watch": "~0.5.3",
+    "requirejs": "~2.1.9"
+  }
+}
