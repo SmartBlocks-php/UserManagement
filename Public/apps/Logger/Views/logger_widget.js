@@ -25,6 +25,7 @@ define([
                 var template = _.template(logout_widget_tpl, {});
             }
             base.$el.html(template);
+      
         },
         registerEvents: function () {
             var base = this;

@@ -7,8 +7,9 @@ define([
 
     var init_login = function () {
         var logger_widget = new LoggerWidget();
-        $("body").append(logger_widget.$el);
         logger_widget.init();
+        SmartBlocks.Blocks.Widgets.Main.addWidget('<i class="fa fa-user fa-2x"></i>', logger_widget.$el);
+
     };
 
 
