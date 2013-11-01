@@ -2,6 +2,14 @@
     "name" : "UserManagement",
     "token" : "UserManagement",
     "types": [
+        {
+            "model_name": "Contact",
+            "collection_name": "Contacts",
+            "plural": "contacts",
+            "ws_origin": "/UserManagement/Contacts",
+            "model_location": "UserManagement/Models/Contact",
+            "collection_location": "UserManagement/Collections/Contacts"
+        }
     ],
     "apps": [
     ]
