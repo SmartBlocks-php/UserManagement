@@ -1,6 +1,36 @@
 .contact_management {
-  @import "contact_thumb";
-  @import "contact_list";
-  @import "user_search";
-  @import "contact_page";
+  height: 100%;
+  .header {
+    height: 50px;
+    line-height: 50px;
+    background: rgba(255, 255, 255, 0.5);
+  }
+
+  .contact_management_content {
+    max-width: 1000px;
+    margin: auto;
+    > div {
+      height: 100%;
+      > div {
+        min-height: 500px;
+        max-height: 100%;
+      }
+    }
+
+    height: ~"calc(100% - 50px)";
+    @import "contact_thumb";
+
+    .contact_list_container {
+
+      @import "contact_list";
+    }
+    .user_search_container {
+
+      @import "user_search";
+    }
+    .contact_page_container {
+      @import "contact_page";
+    }
+  }
+
 }

@@ -7,8 +7,9 @@ define([
     var View = Backbone.View.extend({
         tagName: "div",
         className: "contact_thumb",
-        initialize: function () {
+        initialize: function (obj) {
             var base = this;
+            base.user = obj.model;
         },
         init: function () {
             var base = this;
@@ -19,8 +20,17 @@ define([
         render: function () {
             var base = this;
 
-            var template = _.template(contact_thumb_tpl, {});
+            var template = _.template(contact_thumb_tpl, {
+                user: base.user
+            });
             base.$el.html(template);
+        },
+        addAction: function (icon, callback) {
+            var base = this;
+            base.$el.find(".actions").add(icon);
+            icon.click(function () {
+                callback(base.user);
+            });
         },
         registerEvents: function () {
             var base = this;
