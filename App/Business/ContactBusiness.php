@@ -12,6 +12,10 @@ namespace UserManagement;
  * Class ContactBusiness
  * @package UserManagement
  */
+/**
+ * Class ContactBusiness
+ * @package UserManagement
+ */
 class ContactBusiness
 {
 
@@ -24,6 +28,10 @@ class ContactBusiness
         return Contact::find($id);
     }
 
+    /**
+     * @param \User $user
+     * @return array
+     */
     public static function getContactsOf(\User $user)
     {
         $em = \Model::getEntityManager();
@@ -39,10 +47,20 @@ class ContactBusiness
         return $result;
     }
 
+    /**
+     * @param array $data
+     * @return \UserManagement\Contact
+     * @throws UnauthorizedException
+     */
     public static function addOrCreate($data)
     {
         $usera = \User::find($data["user_a"]["id"]);
         $userb = \User::find($data["user_b"]["id"]);
+
+        if ($usera != \User::current_user() && $userb != \User::current_user() && !\User::current_user()->isAdmin())
+        {
+            throw new UnauthorizedException("Unauthorized action");
+        }
         if (isset($data["id"]))
         {
             $contact = Contact::find($data["id"]);
@@ -71,15 +89,29 @@ class ContactBusiness
             $contact->setUserB($userb);
         }
 
+        $contact->setPending($data["pending"]);
+
         $contact->save();
 
         return $contact;
     }
 
+    /**
+     * @param Contact $contact
+     * @return bool
+     * @throws UnauthorizedException
+     */
     public static function deleteContact(Contact $contact)
     {
-        $contact->delete();
 
+        $usera = $contact->getUserA();
+        $userb = $contact->getUserB();
+        if ($usera != \User::current_user() && $userb != \User::current_user() && !\User::current_user()->isAdmin())
+        {
+            throw new UnauthorizedException("Unauthorized action");
+        }
+
+        $contact->delete();
         if (!is_object($contact))
         {
             return true;
@@ -88,7 +120,6 @@ class ContactBusiness
         else
         {
             return false;
-
         }
 
     }
