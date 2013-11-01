@@ -8,8 +8,22 @@
 
 namespace UserManagement;
 
+/**
+ * Class ContactBusiness
+ * @package UserManagement
+ */
 class ContactBusiness
 {
+
+    /**
+     * @param integer $id
+     * @return \UserManagement\Contact
+     */
+    public static function findContact($id)
+    {
+        return Contact::find($id);
+    }
+
     public static function getContactsOf(\User $user)
     {
         $em = \Model::getEntityManager();
@@ -59,6 +73,23 @@ class ContactBusiness
 
         $contact->save();
 
+        return $contact;
+    }
+
+    public static function deleteContact(Contact $contact)
+    {
+        $contact->delete();
+
+        if (!is_object($contact))
+        {
+            return true;
+
+        }
+        else
+        {
+            return false;
+
+        }
 
     }
-} 
+}

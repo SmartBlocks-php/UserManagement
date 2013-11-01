@@ -28,6 +28,16 @@ class Contact extends \Model
     private $user_b;
 
     /**
+     * @Column(type="boolean")
+     */
+    private $pending;
+
+    public function __construct()
+    {
+        $this->pending = true;
+    }
+
+    /**
      * @return integer
      */
     public function getId()
@@ -65,6 +75,22 @@ class Contact extends \Model
     public function getUserB()
     {
         return $this->user_b;
+    }
+
+    /**
+     * @param boolean $pending
+     */
+    public function setPending($pending)
+    {
+        $this->pending = $pending;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getPending()
+    {
+        return $this->pending;
     }
 
     public function toArray()

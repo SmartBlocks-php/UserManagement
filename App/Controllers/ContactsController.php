@@ -26,16 +26,33 @@ class ContactsController extends \Controller
 
     public function create()
     {
-
+        $data = $this->getRequestData();
+        $contact = ContactBusiness::addOrCreate($data);
+        $this->return_json($contact->toArray());
     }
 
-    public function update()
+    public function update($params = array())
     {
-
+        $data = $this->getRequestData();
+        if (isset($params['id']))
+            $data['id'] = $params['id'];
+        $data = $this->getRequestData();
+        $contact = ContactBusiness::addOrCreate($data);
+        $this->return_json($contact->toArray());
     }
 
-    public function delete()
+    public function delete($params = array())
     {
-
+        $data = $this->getRequestData();
+        $id = isset($data["id"]) ? $data["id"] : $params["id"];
+        $contact = ContactBusiness::findContact($id);
+        if (ContactBusiness::deleteContact($contact))
+        {
+            $this->json_message("Successfully removed contact");
+        }
+        else
+        {
+            $this->json_error("Could not remove contact");
+        }
     }
 } 
