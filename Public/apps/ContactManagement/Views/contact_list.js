@@ -2,8 +2,9 @@ define([
     'jquery',
     'underscore',
     'backbone',
-    'text!../Templates/contact_list.html'
-], function ($, _, Backbone, contact_list_tpl) {
+    'text!../Templates/contact_list.html',
+    './contact_thumbnail'
+], function ($, _, Backbone, contact_list_tpl, ContactThumb) {
     var View = Backbone.View.extend({
         tagName: "div",
         className: "contact_list",
@@ -21,9 +22,81 @@ define([
 
             var template = _.template(contact_list_tpl, {});
             base.$el.html(template);
+            base.renderContactsList();
+        },
+        renderContactsList: function () {
+            var base = this;
+
+            var contacts = SmartBlocks.Blocks.UserManagement.Data.contacts.filter(function (contact) {
+                return contact.get("user_a").get('id') == SmartBlocks.current_user.get('id') ||
+                    contact.get("user_b").get('id') == SmartBlocks.current_user.get('id');
+            });
+
+            console.log("CONTACTS", contacts);
+            base.$el.find(".contact_list_").html('');
+            for (var k in contacts) {
+                var contact = contacts[k];
+                (function (contact) {
+                    if (contact.get("user_a").get('id') != SmartBlocks.current_user.get("id")) {
+                        var thumb = new ContactThumb({ model: contact.get("user_a")});
+                        base.$el.find(".contact_list_").append(thumb.$el);
+                        thumb.init();
+                        thumb.setInfo(" added you");
+                        if (contact.get("pending")) {
+                            thumb.addAction('<a class="fa fa-check-circle clickable-icon" style="color:green" href="javascript:void(0);"></a>',
+                                function (user) {
+                                    contact.set("pending", false);
+                                    contact.save();
+                                }
+                            );
+                            thumb.addAction('<a class="fa fa-minus-circle clickable-icon" style="color:darkred" href="javascript:void(0);"></a>',
+                                function (user) {
+                                    contact.destroy();
+                                }
+                            );
+                        }
+                    } else {
+                        var thumb = new ContactThumb({ model: contact.get("user_b")});
+                        base.$el.find(".contact_list_").append(thumb.$el);
+                        thumb.init();
+                        if (contact.get("pending")) {
+                            thumb.addAction('<a class="fa fa-minus-circle clickable-icon" style="color:darkred" href="javascript:void(0);"></a>',
+                                function (user) {
+                                    contact.destroy();
+                                }
+                            );
+                        }
+
+                    }
+
+                    if (!contact.get("pending")) {
+                        thumb.addAction('<a class="fa fa-minus-circle clickable-icon" style="color:darkred" href="javascript:void(0);"></a>',
+                            function (user) {
+                                contact.destroy();
+                            }
+                        );
+                    }
+                })(contact);
+
+
+            }
+
+
         },
         registerEvents: function () {
             var base = this;
+
+            SmartBlocks.Blocks.UserManagement.Data.contacts.on("change", function () {
+                base.renderContactsList();
+            });
+
+            SmartBlocks.Blocks.UserManagement.Data.contacts.on("add", function () {
+                base.renderContactsList();
+            });
+
+            SmartBlocks.Blocks.UserManagement.Data.contacts.on("remove", function () {
+                base.renderContactsList();
+            });
         }
     });
 

@@ -54,7 +54,7 @@ class ContactsController extends \Controller
         }
     }
 
-    public function delete($params = array())
+    public function destroy($params = array())
     {
         $data = $this->getRequestData();
         $id = isset($data["id"]) ? $data["id"] : $params["id"];

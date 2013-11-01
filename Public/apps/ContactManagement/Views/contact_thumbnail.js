@@ -27,10 +27,15 @@ define([
         },
         addAction: function (icon, callback) {
             var base = this;
-            base.$el.find(".actions").add(icon);
-            icon.click(function () {
+            var elt = $(icon);
+            base.$el.find(".actions").append(elt);
+            elt.click(function () {
                 callback(base.user);
             });
+        },
+        setInfo: function (info) {
+            var base = this;
+            base.$el.find('.more_info').html(info);
         },
         registerEvents: function () {
             var base = this;
