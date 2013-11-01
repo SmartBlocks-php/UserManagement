@@ -89,7 +89,8 @@ class ContactBusiness
             $contact->setUserB($userb);
         }
 
-        $contact->setPending($data["pending"]);
+        if (isset($data["pending"]))
+            $contact->setPending($data["pending"]);
 
         $contact->save();
 
