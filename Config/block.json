@@ -12,5 +12,16 @@
         }
     ],
     "apps": [
+        {
+            "name": "ContactManagement",
+            "token": "ContactManagement",
+            "description": "Your contacts manager",
+            "link": "#ContactManagement",
+            "block_token": "UserManagement",
+            "entry_point": "launch_user_management",
+            "routing": {
+
+            }
+        }
     ]
 }
