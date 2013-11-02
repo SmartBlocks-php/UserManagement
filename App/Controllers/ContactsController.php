@@ -24,6 +24,20 @@ class ContactsController extends \Controller
         $this->return_json($response);
     }
 
+    public function show($params = array())
+    {
+        $contact = ContactBusiness::findContact($params["id"]);
+        if (is_object($contact))
+        {
+            $this->return_json($contact->toArray());
+        }
+        else
+        {
+            $this->json_error("Could not find contact", 404);
+        }
+
+    }
+
     public function create()
     {
         $data = $this->getRequestData();
@@ -35,7 +49,6 @@ class ContactsController extends \Controller
         {
             $this->json_error("The contact could not be created");
         }
-
     }
 
     public function update($params = array())

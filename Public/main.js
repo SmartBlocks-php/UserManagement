@@ -13,6 +13,39 @@ define([
 
     };
 
+    SmartBlocks.events.on("ws_notification", function (notif) {
+        if (notif.block == "UserManagement") {
+            if (notif.message == "contact_saved") {
+                var contact = SmartBlocks.Blocks.UserManagement.Data.contacts.get(notif.contact.id);
+                console.log('before-update', contact);
+                if (contact) {
+                    console.log("FETCHING CONTACT", contact);
+                    contact.fetch({
+                        success: function () {
+                            console.log("FETCHED CONTACT", contact);
+                        }
+                    });
+                } else {
+                    var contact = new SmartBlocks.Blocks.UserManagement.Models.Contact(notif.contact);
+                    contact.fetch({
+                        success: function () {
+                            SmartBlocks.Blocks.UserManagement.Data.contacts.add(contact);
+                        }
+                    });
+
+                }
+
+                console.log('after-update', contact);
+            }
+
+            if (notif.message == "contact_deleted") {
+                console.log('before-remove', SmartBlocks.Blocks.UserManagement.Data.contacts.get(notif.contact.id));
+                SmartBlocks.Blocks.UserManagement.Data.contacts.remove(notif.contact.id);
+                console.log('after-remove', SmartBlocks.Blocks.UserManagement.Data.contacts.get(notif.contact.id));
+            }
+        }
+    });
+
 
     var main = {
         init: function () {
@@ -37,8 +70,8 @@ define([
                     user_a: user_a,
                     user_b: user_b
                 });
-                contact.save();
                 SmartBlocks.Blocks.UserManagement.Data.contacts.add(contact);
+                contact.save();
                 return contact;
             }
         }

@@ -7,6 +7,9 @@
  */
 
 namespace UserManagement;
+
+use ReflectionClass;
+
 /**
  * @Entity @Table(name="user_management_contact")
  */
@@ -19,16 +22,19 @@ class Contact extends \Model
 
     /**
      * @ManyToOne(targetEntity="\User")
+     * @var \User $user_a
      */
     private $user_a;
 
     /**
      * @ManyToOne(targetEntity="\User")
+     * @var \User $user_b
      */
     private $user_b;
 
     /**
      * @Column(type="boolean")
+     * @var boolean $pending
      */
     private $pending;
 
@@ -92,6 +98,39 @@ class Contact extends \Model
     {
         return $this->pending;
     }
+
+    function save()
+    {
+        parent::save();
+        \NodeDiplomat::sendMessage($this->user_a->getSessionId(), array(
+            "block" => "UserManagement",
+            "message" => "contact_saved",
+            "contact" => $this->toArray()
+        ));
+
+        \NodeDiplomat::sendMessage($this->user_b->getSessionId(), array(
+            "block" => "UserManagement",
+            "message" => "contact_saved",
+            "contact" => $this->toArray()
+        ));
+    }
+
+    function delete()
+    {
+        \NodeDiplomat::sendMessage($this->user_a->getSessionId(), array(
+            "block" => "UserManagement",
+            "message" => "contact_deleted",
+            "contact" => $this->toArray()
+        ));
+
+        \NodeDiplomat::sendMessage($this->user_b->getSessionId(), array(
+            "block" => "UserManagement",
+            "message" => "contact_deleted",
+            "contact" => $this->toArray()
+        ));
+        parent::delete();
+    }
+
 
     public function toArray()
     {
