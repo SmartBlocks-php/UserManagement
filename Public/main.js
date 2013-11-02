@@ -48,7 +48,20 @@ define([
                                         contact.get("user_a").get("name") + " wants to be your contact.",
                                         "contact_req" + contact.get("id"),
                                         {
+                                            "Accept": function () {
+                                                console.log("fsdf", contact);
+                                                contact.set("pending", false);
+                                                contact.save();
+                                            },
+                                            "Refuse": function () {
+                                                console.log("stufsssssssqf", contact);
+                                                contact.destroy();
 
+                                            },
+                                            "Review all": function () {
+                                                window.location = "#ContactManagement";
+                                                console.log("stufqqqqf");
+                                            }
                                         });
                                 }
                             }
