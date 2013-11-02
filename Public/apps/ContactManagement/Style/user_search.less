@@ -5,6 +5,10 @@
   margin: 10px;
   position: relative;
 
+  height: 35px;
+  min-height: 35px;
+  transition: all 0.3s;
+
   .user_search_input {
     padding: 5px;
     border: none;
@@ -14,11 +18,21 @@
     right: 0px;
     top: 0px;
     height: 25px;
+
+  }
+
+  &.expanded {
+    //    height: 500px;
   }
 
   .user_search_results {
     //    margin-top: 25px;
-    position: relative;
+    position: absolute;
     top: 38px;
+    display: none;
+    left: 0px;
+    width: 100%;
+    background: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.9);
   }
 }

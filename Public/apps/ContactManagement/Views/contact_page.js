@@ -10,8 +10,10 @@ define([
         initialize: function () {
             var base = this;
         },
-        init: function () {
+        init: function (contact_list) {
             var base = this;
+
+            base.contact_list = contact_list;
 
             base.render();
             base.registerEvents();
@@ -19,11 +21,32 @@ define([
         render: function () {
             var base = this;
 
-            var template = _.template(contact_page_tpl, {});
-            base.$el.html(template);
+            if (base.user) {
+                var template = _.template(contact_page_tpl, {
+                    user: base.user
+                });
+                base.user.getImageUrl(200, function (url, error) {
+                    if (!error) {
+                        var image = $(document.createElement('img'));
+                        image.attr("src", url);
+                        base.$el.find(".image_container").html(image);
+                    } else {
+                        var image = $(document.createElement('img'));
+                        image.attr("src", url);
+                        base.$el.find(".image_container").html(image);
+                    }
+                });
+                base.$el.html(template);
+            }
+
         },
         registerEvents: function () {
             var base = this;
+
+            base.contact_list.events.on("user_selected", function () {
+                base.user = base.contact_list.selected_user;
+                base.render();
+            });
         }
     });
 

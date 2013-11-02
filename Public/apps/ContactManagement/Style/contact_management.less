@@ -9,33 +9,34 @@
   .contact_management_content {
     max-width: 1000px;
     margin: auto;
-    > div {
-      height: 100%;
-      > div {
-        min-height: 500px;
-        max-height: 100%;
-        background: white;
-        margin: 10px;
-        //        padding: 20px;
-      }
-    }
 
     height: ~"calc(100% - 50px)";
     @import "contact_thumb";
 
-    .contact_list_container {
+    .contacts {
+      float: left;
+      .contact_list_container {
 
-      @import "contact_list";
+        @import "contact_list";
+        width: 200px;
+      }
+      .user_search_container {
 
+        @import "user_search";
+        float: left;
+        width: 200px;
+        height: auto;
+        min-height: auto;
+      }
     }
-    .user_search_container {
 
-      @import "user_search";
-
-    }
     .contact_page_container {
       @import "contact_page";
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+      float: left;
 
+      width: 400px;
+      background: white;
     }
     @media (max-width: 600px) {
       .contact_page_container, .user_search_container, .contact_list_container {

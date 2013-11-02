@@ -50,6 +50,7 @@ define([
             var users = SmartBlocks.Blocks.Kernel.Data.users.filter(function (user) {
                 return user.get("name") && user.get("name").indexOf(input) > -1;
             });
+            users = _.first(users, 5);
             base.users.reset(users);
         },
         registerEvents: function () {
@@ -62,6 +63,7 @@ define([
                 key_timer = setTimeout(function () {
                     if (elt.val() != "") {
                         base.launch_search();
+                        base.$el.find(".user_search_results").slideDown(200);
                     } else {
                         base.$el.find('.user_search_results').html('');
                     }
@@ -71,6 +73,27 @@ define([
 
             base.users.on("reset", function () {
                 base.renderUsersList();
+            });
+
+            base.$el.delegate('.user_search_input', 'focus', function () {
+                base.$el.find(".user_search_results").slideDown(200);
+            });
+            base.$el.mouseenter(function () {
+                base.$el.find(".user_search_results").slideDown(200);
+                clearTimeout(hide_timer);
+            });
+
+
+            base.$el.delegate(".user_search_results a", 'click', function () {
+                base.$el.find(".user_search_results").slideUp(200);
+            });
+
+            var hide_timer = 0;
+            base.$el.mouseout(function () {
+                clearTimeout(hide_timer);
+                hide_timer = setTimeout(function () {
+                    base.$el.find(".user_search_results").slideUp(200);
+                }, 1000);
             });
         }
     });

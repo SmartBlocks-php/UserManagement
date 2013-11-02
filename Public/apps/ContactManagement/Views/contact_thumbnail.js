@@ -33,6 +33,13 @@ define([
                 callback(base.user);
             });
         },
+        onClick: function (callback) {
+            var base = this;
+            base.$el.click(function () {
+                callback(base.user);
+            });
+            base.$el.addClass("clickable");
+        },
         setInfo: function (info) {
             var base = this;
             base.$el.find('.more_info').html(info);

@@ -10,6 +10,7 @@ define([
         className: "contact_list",
         initialize: function () {
             var base = this;
+            base.events = $.extend({}, Backbone.Events);
         },
         init: function () {
             var base = this;
@@ -79,6 +80,11 @@ define([
                             }
                         );
                     }
+                    thumb.onClick(function (user) {
+                        thumb.$el.addClass("selected");
+                        base.selected_user = user;
+                        base.events.trigger("user_selected");
+                    });
                 })(contact);
 
 
