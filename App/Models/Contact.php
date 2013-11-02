@@ -137,7 +137,8 @@ class Contact extends \Model
         $array = array(
             "id" => $this->id,
             "user_a" => $this->user_a->toArray(),
-            "user_b" => $this->user_b->toArray()
+            "user_b" => $this->user_b->toArray(),
+            "pending" => $this->pending
         );
         return $array;
     }

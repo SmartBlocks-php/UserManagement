@@ -41,15 +41,15 @@ define([
                         var thumb = new ContactThumb({ model: contact.get("user_a")});
                         base.$el.find(".contact_list_").append(thumb.$el);
                         thumb.init();
-                        thumb.setInfo(" added you");
                         if (contact.get("pending")) {
-                            thumb.addAction('<a class="fa fa-check-circle clickable-icon" style="color:green" href="javascript:void(0);"></a>',
+                            thumb.setInfo(" added you ");
+                            thumb.addAction('<a class="fa fa-check clickable-icon"  title="Accept contact" href="javascript:void(0);"></a>',
                                 function (user) {
                                     contact.set("pending", false);
                                     contact.save();
                                 }
                             );
-                            thumb.addAction('<a class="fa fa-minus-circle clickable-icon" style="color:darkred" href="javascript:void(0);"></a>',
+                            thumb.addAction('<a class="fa fa-minus clickable-icon" title="Refuse contact" href="javascript:void(0);"></a>',
                                 function (user) {
                                     contact.destroy();
                                 }
@@ -60,7 +60,8 @@ define([
                         base.$el.find(".contact_list_").append(thumb.$el);
                         thumb.init();
                         if (contact.get("pending")) {
-                            thumb.addAction('<a class="fa fa-minus-circle clickable-icon" style="color:darkred" href="javascript:void(0);"></a>',
+                            thumb.setInfo("(waiting)");
+                            thumb.addAction('<a class="fa fa-minus clickable-icon" title="Cancel contact"  href="javascript:void(0);"></a>',
                                 function (user) {
                                     contact.destroy();
                                 }
@@ -70,9 +71,11 @@ define([
                     }
 
                     if (!contact.get("pending")) {
-                        thumb.addAction('<a class="fa fa-minus-circle clickable-icon" style="color:darkred" href="javascript:void(0);"></a>',
+                        thumb.addAction('<a class="fa fa-minus clickable-icon" title="Remove contact" href="javascript:void(0);"></a>',
                             function (user) {
-                                contact.destroy();
+                                if (confirm("Are you sure you want do remove this contact")) {
+                                    contact.destroy();
+                                }
                             }
                         );
                     }
