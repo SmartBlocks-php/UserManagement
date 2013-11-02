@@ -19,10 +19,21 @@ define([
                 var contact = SmartBlocks.Blocks.UserManagement.Data.contacts.get(notif.contact.id);
                 console.log('before-update', contact);
                 if (contact) {
-                    console.log("FETCHING CONTACT", contact);
+
                     contact.fetch({
                         success: function () {
-                            console.log("FETCHED CONTACT", contact);
+                            console.log(contact);
+                            if (contact.get("pending")) {
+                                console.log("is pending");
+                                if (SmartBlocks.Blocks.Notifications) {
+                                    SmartBlocks.Blocks.Notifications.Main.notify("New contact request",
+                                        contact.get("user_a").get("name") + " wants to be your contact.",
+                                        "contact_req" + contact.get("id"),
+                                        {
+
+                                        });
+                                }
+                            }
                         }
                     });
                 } else {
@@ -30,6 +41,17 @@ define([
                     contact.fetch({
                         success: function () {
                             SmartBlocks.Blocks.UserManagement.Data.contacts.add(contact);
+                            if (contact.get("pending") && contact.get("user_a").get("id") != SmartBlocks.current_user.get('id')) {
+                                console.log("is pending");
+                                if (SmartBlocks.Blocks.Notifications) {
+                                    SmartBlocks.Blocks.Notifications.Main.notify("New contact request",
+                                        contact.get("user_a").get("name") + " wants to be your contact.",
+                                        "contact_req" + contact.get("id"),
+                                        {
+
+                                        });
+                                }
+                            }
                         }
                     });
 
