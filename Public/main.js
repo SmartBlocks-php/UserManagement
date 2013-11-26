@@ -90,6 +90,8 @@ define([
             var contact_management = new ContactManagementView();
             SmartBlocks.Methods.render(contact_management.$el);
             contact_management.init();
+
+
         },
         makeContact: function (user_a, user_b) {
             var contacts = SmartBlocks.Blocks.UserManagement.Data.contacts.filter(function (contact) {
