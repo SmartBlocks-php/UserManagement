@@ -2,7 +2,26 @@
     "name" : "UserManagement",
     "token" : "UserManagement",
     "types": [
+        {
+            "model_name": "Contact",
+            "collection_name": "Contacts",
+            "plural": "contacts",
+            "ws_origin": "/UserManagement/Contacts",
+            "model_location": "UserManagement/Models/Contact",
+            "collection_location": "UserManagement/Collections/Contacts"
+        }
     ],
     "apps": [
+        {
+            "name": "ContactManagement",
+            "token": "ContactManagement",
+            "description": "Your contacts manager",
+            "link": "#ContactManagement",
+            "block_token": "UserManagement",
+            "entry_point": "launch_user_management",
+            "routing": {
+
+            }
+        }
     ]
 }

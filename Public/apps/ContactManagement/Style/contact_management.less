@@ -1,0 +1,49 @@
+.contact_management {
+  height: 100%;
+  .header {
+    height: 50px;
+    line-height: 50px;
+    background: rgba(255, 255, 255, 0.5);
+  }
+
+  .contact_management_content {
+    max-width: 1000px;
+    margin: auto;
+
+    height: ~"calc(100% - 50px)";
+    @import "contact_thumb";
+
+    .contacts {
+      float: left;
+      .contact_list_container {
+
+        @import "contact_list";
+        width: 200px;
+      }
+      .user_search_container {
+
+        @import "user_search";
+        float: left;
+        width: 200px;
+        height: auto;
+        min-height: auto;
+      }
+    }
+
+    .contact_page_container {
+      @import "contact_page";
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+      float: left;
+
+      width: 400px;
+      background: white;
+    }
+    @media (max-width: 600px) {
+      .contact_page_container, .user_search_container, .contact_list_container {
+        width: 100%;
+        height: auto;
+      }
+    }
+  }
+
+}
