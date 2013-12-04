@@ -19,6 +19,7 @@
             "link": "#ContactManagement",
             "block_token": "UserManagement",
             "entry_point": "launch_user_management",
+            "restricted_to": "user",
             "routing": {
 
             }
