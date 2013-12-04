@@ -38,7 +38,7 @@ class ContactBusiness
 
         $qb = $em->createQueryBuilder();
 
-        $qb       ->select("c")->from('\UserManagement\Contact', 'c')->
+        $qb->select("c")->from('\UserManagement\Contact', 'c')->
             where('c.user_a = :user OR c.user_b = :user')
                   ->setParameter("user", $user);
 
