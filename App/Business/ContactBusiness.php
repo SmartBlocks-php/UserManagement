@@ -8,23 +8,21 @@
 
 namespace UserManagement;
 
+    /**
+     * Class ContactBusiness
+     * @package UserManagement
+     */
 /**
  * Class ContactBusiness
  * @package UserManagement
  */
-/**
- * Class ContactBusiness
- * @package UserManagement
- */
-class ContactBusiness
-{
+class ContactBusiness {
 
     /**
      * @param integer $id
      * @return \UserManagement\Contact
      */
-    public static function findContact($id)
-    {
+    public static function findContact($id) {
         return Contact::find($id);
     }
 
@@ -32,17 +30,20 @@ class ContactBusiness
      * @param \User $user
      * @return array
      */
-    public static function getContactsOf(\User $user)
-    {
+    public static function getContactsOf($user) {
         $em = \Model::getEntityManager();
+        $result = array();
 
-        $qb = $em->createQueryBuilder();
+        if (is_object($user)) {
+            $qb = $em->createQueryBuilder();
 
-        $qb       ->select("c")->from('\UserManagement\Contact', 'c')->
-            where('c.user_a = :user OR c.user_b = :user')
-                  ->setParameter("user", $user);
+            $qb       ->select("c")->from('\UserManagement\Contact', 'c')->
+                where('c.user_a = :user OR c.user_b = :user')
+                      ->setParameter("user", $user);
 
-        $result = $qb->getQuery()->getResult();
+            $result = $qb->getQuery()->getResult();
+        }
+
 
         return $result;
     }
@@ -52,21 +53,17 @@ class ContactBusiness
      * @return \UserManagement\Contact
      * @throws UnauthorizedException
      */
-    public static function addOrCreate($data)
-    {
+    public static function addOrCreate($data) {
         $usera = \User::find($data["user_a"]["id"]);
         $userb = \User::find($data["user_b"]["id"]);
 
-        if ($usera != \User::current_user() && $userb != \User::current_user() && !\User::current_user()->isAdmin())
-        {
+        if ($usera != \User::current_user() && $userb != \User::current_user() && !\User::current_user()->isAdmin()) {
             throw new UnauthorizedException("Unauthorized action");
         }
-        if (isset($data["id"]))
-        {
+        if (isset($data["id"])) {
             $contact = Contact::find($data["id"]);
         }
-        else
-        {
+        else {
             $em = \Model::getEntityManager();
             $qb = $em->createQueryBuilder();
 
@@ -76,14 +73,12 @@ class ContactBusiness
                ->setParameter('usera', $usera)->setParameter('userb', $userb);
             $result = $qb->getQuery()->getResult();
 
-            if (isset($result[0]))
-            {
+            if (isset($result[0])) {
                 $contact = $result[0];
             }
         }
 
-        if (!isset($contact))
-        {
+        if (!isset($contact)) {
             $contact = new Contact;
             $contact->setUserA($usera);
             $contact->setUserB($userb);
@@ -102,26 +97,20 @@ class ContactBusiness
      * @return bool
      * @throws UnauthorizedException
      */
-    public static function deleteContact(Contact $contact)
-    {
+    public static function deleteContact(Contact $contact) {
 
         $usera = $contact->getUserA();
         $userb = $contact->getUserB();
-        if ($usera != \User::current_user() && $userb != \User::current_user() && !\User::current_user()->isAdmin())
-        {
+        if ($usera != \User::current_user() && $userb != \User::current_user() && !\User::current_user()->isAdmin()) {
             throw new UnauthorizedException("Unauthorized action");
         }
 
         $contact->delete();
-        if (!is_object($contact))
-        {
+        if (!is_object($contact)) {
             return true;
-
         }
-        else
-        {
+        else {
             return false;
         }
-
     }
 }
